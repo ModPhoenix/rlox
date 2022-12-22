@@ -79,26 +79,38 @@ impl Scanner {
             '+' => self.add_token(TokenType::Plus),
             ';' => self.add_token(TokenType::Semicolon),
             '*' => self.add_token(TokenType::Star),
-            '!' => self.add_token(if self.match_char('=') {
-                TokenType::BangEqual
-            } else {
-                TokenType::Bang
-            }),
-            '=' => self.add_token(if self.match_char('=') {
-                TokenType::EqualEqual
-            } else {
-                TokenType::Equal
-            }),
-            '<' => self.add_token(if self.match_char('=') {
-                TokenType::LessEqual
-            } else {
-                TokenType::Less
-            }),
-            '>' => self.add_token(if self.match_char('=') {
-                TokenType::GreaterEqual
-            } else {
-                TokenType::Greater
-            }),
+            '!' => {
+                let is_match = self.match_char('=');
+                self.add_token(if is_match {
+                    TokenType::BangEqual
+                } else {
+                    TokenType::Bang
+                })
+            }
+            '=' => {
+                let is_match = self.match_char('=');
+                self.add_token(if is_match {
+                    TokenType::EqualEqual
+                } else {
+                    TokenType::Equal
+                })
+            }
+            '<' => {
+                let is_match = self.match_char('=');
+                self.add_token(if is_match {
+                    TokenType::LessEqual
+                } else {
+                    TokenType::Less
+                })
+            }
+            '>' => {
+                let is_match = self.match_char('=');
+                self.add_token(if is_match {
+                    TokenType::GreaterEqual
+                } else {
+                    TokenType::Greater
+                })
+            }
             '/' => {
                 if self.match_char('/') {
                     // A comment goes until the end of the line.

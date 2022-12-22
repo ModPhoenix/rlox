@@ -11,7 +11,7 @@ impl Lox {
         Self { had_error: false }
     }
 
-    pub fn run_file(self, path: &str) -> Result<(), std::io::Error> {
+    pub fn run_file(mut self, path: &str) -> Result<(), std::io::Error> {
         let bytes = std::fs::read(path)?;
         self.run(&String::from_utf8(bytes).unwrap());
         Ok(())
@@ -33,7 +33,7 @@ impl Lox {
         Ok(())
     }
 
-    pub fn run(self, source: &str) {
+    pub fn run(&mut self, source: &str) {
         // Indicate an error in the exit code.
         if self.had_error {
             std::process::exit(65);
@@ -44,18 +44,18 @@ impl Lox {
 
         // For now, just print the tokens.
         for token in tokens {
-            println!("{:#?}", token);
+            println!("{}", token.to_string());
             if token.token_type == TokenType::Unknown {
                 self.error(token.line, "Unexpected character.");
             }
         }
     }
 
-    fn error(self, line: usize, message: &str) {
+    fn error(&mut self, line: usize, message: &str) {
         self.report(line, "", message);
     }
 
-    fn report(mut self, line: usize, where_: &str, message: &str) {
+    fn report(&mut self, line: usize, where_: &str, message: &str) {
         eprintln!("[line {line}] Error{where_}: {message}");
 
         self.had_error = true;
